@@ -1,0 +1,55 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+#establish triggers for action
+on: 
+ push:
+  branches: [development]
+#establish jobs for the workflow of the action
+jobs:
+ #define the test job 
+ test:
+  #define the type of runner used for the job (target OS)
+  runs-on: windows-latest
+  #steps of the build job - defines what occurs when the job is triggered
+  steps:
+  - name: Step 1 - Check out branch from Github
+    uses: actions/checkout@v2
+  - name: Step 2 - Set up JDK
+    uses: actions/setup-java@v1
+    with:
+     java-version: 16
+     distribution: adopt
+  - name: Step 3 - Test project(s) with Maven
+    run: |
+     echo TESTING PROJECT 1
+     cd code/CodeCoverage_Sample
+     mvn --batch-mode --update-snapshots clean verify
+     cd ../..
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
